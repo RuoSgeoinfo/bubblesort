@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Austauschstemplate.iml" filepath="$PROJECT_DIR$/.idea/Austauschstemplate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/baseWebpack.iml" filepath="$PROJECT_DIR$/.idea/baseWebpack.iml" />
     </modules>
   </component>
 </project>
