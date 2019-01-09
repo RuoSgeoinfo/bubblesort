@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack -d --watch",
+    "prod": "npm run clean && SET NODE_ENV=production&&webpack -p",
+    "clean": "rimraf client/baseWebpack/dist"
   },
   "repository": {
     "type": "git",
@@ -13,6 +15,22 @@
   "author": "lehp",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.7.5"
+    "@geolib/geolib-server": "git+ssh://git@git.geoinfo.ch:7999/geolib/geolib-server.git",
+    "mini-css-extract-plugin": "^0.5.0",
+    "request": "^2.88.0",
+    "underscore": "^1.9.1",
+    "webpack": "^4.28.3"
+  },
+  "devDependencies": {
+    "angular": "^1.7.5",
+    "css-hot-loader": "^1.4.3",
+    "css-loader": "^2.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "stylus-relative-loader": "^4.0.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }
