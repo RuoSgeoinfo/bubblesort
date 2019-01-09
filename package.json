@@ -15,8 +15,8 @@
   "author": "lehp",
   "license": "ISC",
   "dependencies": {
-    "@geolib/geolib-server": "git+ssh://git@git.geoinfo.ch:7999/geolib/geolib-server.git",
-    "@geolib/geolib-bootstrap": "git+ssh://git@git.geoinfo.ch:7999/geolib/geolib-bootstrap.git",
+    "@geolib/geolib-server": "git+http://git.geoinfo.ch/scm/geolib/geolib-server.git",
+    "@geolib/geolib-bootstrap": "git+http://git.geoinfo.ch/scm/geolib/geolib-bootstrap.git",
     "mini-css-extract-plugin": "^0.5.0",
     "request": "^2.88.0",
     "underscore": "^1.9.1",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "angular": "^1.7.5",
-    "@geolib/ngp-dev-libraries": "git+ssh://git@git.geoinfo.ch:7999/ngp/ngp-dev-libraries.git#development",
+    "@geolib/ngp-dev-libraries": "git+http://git.geoinfo.ch/scm/ngp/ngp-dev-libraries.git",
     "angular-animate": "^1.7.5",
     "angular-bootstrap-switch": "^0.5.1",
     "angular-bootstrap-toggle-switch": "^1.1.0",

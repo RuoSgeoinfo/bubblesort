@@ -1,4 +1,7 @@
 <div>
     {{ $ctrl.test }}
 </div>
+<input type="text" ng-model="$ctrl.name">
+<button ng-click="$ctrl.clickButton($ctrl.name)">{{$ctrl.button}}</button>
+<p ng-repeat="number in $ctrl.numbers track by $index">{{ number }}</p>
 <ui-view></ui-view>
