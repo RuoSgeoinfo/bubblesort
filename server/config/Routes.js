@@ -3,12 +3,8 @@ const path = require("path");
 const fs = require("fs");
 
 function Routes(app, APP_BASE_PATH) {
-    app.route("/test")
+    app.route("/services/test")
         .get((req, res) => res.send("test"));
-
-
-
-
 
     app.route("/*")
         .get((req, res) => {
@@ -16,7 +12,7 @@ function Routes(app, APP_BASE_PATH) {
         });
 
     function* getIndexHtml() {
-        const indexPath = path.join(APP_BASE_PATH, "/dist/index.html");
+        const indexPath = path.join(APP_BASE_PATH, "/client/baseWebpack/dist/index.html");
 
         yield fs.readFileSync(indexPath).toString("utf8");
     }

@@ -1,8 +1,15 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+"use strict";
+
+const _ = require("underscore");
 const os = require("os");
 const fs = require("fs");
-const webpackPlugins = require("./webpack.plugins");
+const path = require("path");
+const glob = require("glob");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const webpackPlugins = require("./webpack.plugins.js");
+
 const cssLoader = [
     {
         loader: MiniCssExtractPlugin.loader,
@@ -14,30 +21,78 @@ const cssLoader = [
         loader: "css-loader"
     }
 ];
+
+const stylusLoader = ["css-hot-loader", ...cssLoader, "stylus-relative-loader"];
+
+const happyPackLoader = {
+    loader: "happypack/loader",
+    options: {
+        id: "babel"
+    }
+};
+
 function localRealPath(...parts) {
     return fs.realpathSync(path.resolve(__dirname, ...parts));
 }
-const stylusLoader = ["css-hot-loader", ...cssLoader, "stylus-relative-loader"];
-let path = require("path");
 
+const webpackBaseConfig = {
 
-module.exports = {
-    entry: './app/app.js',
     mode: "development",
-    output: {
-        path: path.resolve(__dirname, "dist"),
-    filename: "app.bundle.js"
+
+    entry: {
+        app: _.union(
+            glob.sync("./client/baseWebpack/app/**/*.js", { nosort: true })
+        )
     },
+
+    output: {
+        path: path.resolve(__dirname, "client/baseWebpack/dist/"),
+        filename: "[name].js"
+    },
+
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                cache: true,
+                parallel: require("os").cpus().length,
+                sourceMap: false
+            }),
+            new OptimizeCSSAssetsPlugin({})
+        ],
+        splitChunks: {
+            maxInitialRequests: 5,
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendor",
+                    chunks: "initial"
+                }
+            }
+        }
+    },
+
     module: {
         rules: [{
             test: /\.styl$/,
             use: stylusLoader
         }, {
             test: /\.css$/,
-            use: ["style-loader", "css-loader"]
+            use: cssLoader
+        }, {
+            test: /\.m?js$/,
+            include: (() => {
+                const paths = [
+                    "client"].map((p) => localRealPath(p));
+
+                return (filePath) => paths.some((p) => filePath.startsWith(p));
+            })(),
+            use: happyPackLoader
         }, {
             test: /\.jade$/,
             use: "jade-loader"
+        }, {
+            test: /\.(html)$/,
+            use: "html-loader"
         }, {
             test: /\.(woff2?|svg)$/,
             loader: "url-loader?limit=10000&name=fonts/[name].[ext]"
@@ -48,8 +103,18 @@ module.exports = {
                 "image-webpack-loader?bypassOnDebug"
             ]
         }, {
+            test: /\.(ttf|eot)$/,
+            use: "file-loader?name=fonts/[name].[ext]"
+        }, {
+            test: /\.pdf$/i,
+            use: "file-loader?name=pdf/[name].[ext]"
+        }, {
             test: /\.json$/,
             loader: "json-loader",
+            type: "javascript/auto"
+        }, {
+            test: /\.mjs$/,
+            use: [],
             type: "javascript/auto"
         }]
     },
@@ -65,7 +130,7 @@ module.exports = {
         inline: true,
         historyApiFallback: true,
         proxy: ((() => {
-            const port = "3000";
+            const port = "3333";
             const proxy = { target: `http://${os.hostname()}:${port}`, secure: false };
 
             return {
@@ -79,17 +144,27 @@ module.exports = {
             };
         })())
     },
+
+    devtool: "cheap-module-eval-source-map",
+
     resolve: {
         unsafeCache: true,
         modules: [
             "node_modules"
         ],
         alias: {
+            "@geolib": localRealPath("node_modules/@geolib"),
 
+            // optimization: localize shared dependencies
             angular: localRealPath("node_modules/angular"),
             underscore: localRealPath("node_modules/underscore"),
         }
     },
-    plugins: webpackPlugins.plugins
 
+    plugins: webpackPlugins.development
 };
+
+module.exports = webpackBaseConfig;
+
+
+

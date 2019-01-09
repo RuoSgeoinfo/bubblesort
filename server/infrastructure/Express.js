@@ -30,14 +30,14 @@ class Express {
         app.disable("x-powered-by");
 
         app.set("view engine", "html");
-        app.set("views", path.join(config.rootPath + "/dist"));
+        app.set("views", path.join(config.rootPath + "/client/baseWebpack/dist"));
 
         app.use(logger.requestLogger);
 
         app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 
         app.use(bodyParser.json({ limit: "5mb" }));
-        app.use(StaticFileMiddleware.serve(path.join(config[this.env].rootPath, `/dist`), {
+        app.use(StaticFileMiddleware.serve(path.join(config[this.env].rootPath, `/client/baseWebpack/dist`), {
             checkFilenames: "development",
             lastModified: true,
             index: false,
