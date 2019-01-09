@@ -4,8 +4,8 @@ const path = require("path");
 const rootPath = path.join(__dirname, "/../../");
 
 module.exports = {
-    projectName: "base",
-    projectTitle: "Base",
+    projectName: "baseWebpack",
+    projectTitle: "baseWebpack",
     rootPath: rootPath,
     privilegeKeys: {
         default: "geoapp.base",

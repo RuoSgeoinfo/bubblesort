@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const os = require("os");
 const fs = require("fs");
+const webpackPlugins = require("./webpack.plugins");
 const cssLoader = [
     {
         loader: MiniCssExtractPlugin.loader,
@@ -89,17 +90,6 @@ module.exports = {
             underscore: localRealPath("node_modules/underscore"),
         }
     },
-
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: "index.html",
-            minify : {
-                collapseWhitespace: true,
-                hash: true
-            },
-            template: "views/index.html"
-        }),
-        new MiniCssExtractPlugin()
-    ]
+    plugins: webpackPlugins.plugins
 
 };
